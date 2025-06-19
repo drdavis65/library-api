@@ -10,6 +10,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+
 
 @Entity
 public class Book {
@@ -20,7 +22,6 @@ public class Book {
 
     private String title;
     private String isbn;
-    private boolean isBorrowed;
 
     @ManyToMany
     @JoinTable(
@@ -30,22 +31,29 @@ public class Book {
     )
     private Set<Author> authors = new HashSet<>();
 
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member borrowedBy;
+
     public Book() {}
 
     public Book(String title, String isbn, Author author) {
         this.title = title;
         this.isbn = isbn;
-        this.isBorrowed = false;
-
         this.authors.add(author);
+        this.borrowedBy = null;
     }
 
     public Book(String title, String isbn, Set<Author> authors) {
         this.title = title;
         this.isbn = isbn;
-        this.isBorrowed = false;
-
         this.authors = authors;
+        this.borrowedBy = null;
+    }
+
+
+    public Long getId() {
+        return this.id;
     }
 
     public String getTitle() {
@@ -56,13 +64,40 @@ public class Book {
         return this.isbn;
     }
 
-    public boolean getIsBorrowed() {
-        return this.isBorrowed;
+    public Member getBorrowedBy() {
+        return this.borrowedBy;
     }
 
     public Set<Author> getAuthors() {
         return this.authors;
     }
+    
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
+    public void borrow(Member member) {
+        if (this.borrowedBy != null) {
+            throw new IllegalStateException("Book is already borrowed.");
+        }
+        this.borrowedBy = member;
+    }
+
+    public void returnBook() {
+        if (this.borrowedBy == null) {
+            throw new IllegalStateException("Book is not currently borrowed.");
+        }
+        this.borrowedBy = null;
+    }
+
+    public boolean isBorrowed() {
+        return this.borrowedBy != null;
+    }
+
 
 
 }
