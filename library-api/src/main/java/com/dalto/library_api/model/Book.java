@@ -40,7 +40,10 @@ public class Book {
     public Book(String title, String isbn, Author author) {
         this.title = title;
         this.isbn = isbn;
-        this.authors.add(author);
+        this.authors = new HashSet<>();
+        if (author != null) {
+            this.authors.add(author);
+        }
         this.borrowedBy = null;
     }
 
@@ -70,6 +73,10 @@ public class Book {
 
     public Set<Author> getAuthors() {
         return this.authors;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
     
     public void setTitle(String title) {

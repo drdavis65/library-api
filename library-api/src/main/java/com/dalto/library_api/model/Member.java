@@ -22,7 +22,7 @@ public class Member {
     private String email;
     
     @OneToMany(mappedBy = "borrowedBy", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Book> booksBorrowed = new HashSet<>();
+    private final Set<Book> booksBorrowed = new HashSet<>();
 
 
     public Long getId() {
@@ -40,6 +40,10 @@ public class Member {
         return email;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -54,10 +58,6 @@ public class Member {
 
     public Set<Book> getBooksBorrowed() {
         return booksBorrowed;
-    }
-
-    public void setBooksBorrowed(Set<Book> booksBorrowed) {
-        this.booksBorrowed = booksBorrowed;
     }
 
     public void borrowBook(Book book) {
