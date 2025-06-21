@@ -3,6 +3,7 @@ package com.dalto.library_api.service;
 import java.util.List;
 import java.util.Set;
 
+import com.dalto.library_api.dto.MemberDTO;
 import com.dalto.library_api.model.Book;
 import com.dalto.library_api.model.Member;
 
@@ -14,5 +15,7 @@ public interface IMemberService {
     void deleteMember(Long id);
     Set<Book> getBooksBorrowedByMember(Long memberId);
     void returnAllBooks(Long memberId); // optional
+    List<MemberDTO> getAllMembersAsDTOs();
+    MemberDTO getMemberDTOById(Long id);
 }
 

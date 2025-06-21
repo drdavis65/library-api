@@ -86,4 +86,40 @@ public class BookControllerTest {
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
         verify(mockService, times(1)).deleteBook(bookId);
     }
+
+    @Test
+    public void testBorrowBook() {
+        IBookService mockService = mock(IBookService.class);
+        BookController controller = new BookController(mockService);
+
+        Book mockBook = new Book("Borrowed Book", "1234567890", new HashSet<>());
+        mockBook.setId(1L);
+
+        when(mockService.borrowBook(1L, 1L)).thenReturn(mockBook);
+
+        ResponseEntity<Book> response = controller.borrowBook(1L, 1L);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals("Borrowed Book", response.getBody().getTitle());
+        verify(mockService, times(1)).borrowBook(1L, 1L);
+    }
+
+    @Test
+    public void testReturnBook() {
+        IBookService mockService = mock(IBookService.class);
+        BookController controller = new BookController(mockService);
+
+        Book mockBook = new Book("Returned Book", "1234567890", new HashSet<>());
+        mockBook.setId(1L);
+
+        when(mockService.returnBook(1L)).thenReturn(mockBook);
+
+        ResponseEntity<Book> response = controller.returnBook(1L);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals("Returned Book", response.getBody().getTitle());
+        verify(mockService, times(1)).returnBook(1L);
+    }
 }

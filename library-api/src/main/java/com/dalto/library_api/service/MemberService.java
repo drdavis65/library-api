@@ -38,12 +38,14 @@ public class MemberService implements IMemberService {
         );
     }
 
+    @Override
     public List<MemberDTO> getAllMembersAsDTOs() {
         return memberRepository.findAll().stream()
             .map(this::toDTO)
             .collect(Collectors.toList());
     }
 
+    @Override
     public MemberDTO getMemberDTOById(Long id) {
         Member member = memberRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Member not found"));
